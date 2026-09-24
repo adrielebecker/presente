@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Identificação</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body class="pagina-identificacao">
+
+    <main class="tela-identificacao">
+
+        <div class="identificacao-conteudo">
+
+            <div class="identificacao-topo">
+                <span class="identificacao-introducao"> VOCÊ RECONHECEU?</span>
+            </div>
+
+            <div class="identificacao-linha"></div>
+
+            <h1 class="identificacao-titulo">
+                DE QUAL UNIVERSO
+                <span>VÊM ESTAS PISTAS?</span>
+            </h1>
+
+            <div class="opcoes-jogos">
+
+                <button class="opcao-jogo correta" data-resposta="certa">
+                    <span class="numero-opcao">01</span>
+                    <span class="nome-jogo">GTA</span>
+                </button>
+
+                <button class="opcao-jogo" data-resposta="errada">
+                    <span class="numero-opcao">02</span>
+                    <span class="nome-jogo">NEED FOR SPEED</span>
+                </button>
+
+                <button class="opcao-jogo" data-resposta="errada">
+                    <span class="numero-opcao">03</span>
+                    <span class="nome-jogo">MIDNIGHT CLUB</span>
+                </button>
+
+                <button class="opcao-jogo" data-resposta="errada">
+                    <span class="numero-opcao">04</span>
+                    <span class="nome-jogo">BURNOUT</span>
+                </button>
+
+            </div>
+
+            <div class="mensagem-resposta" id="mensagemResposta"></div>
+
+            <a href="pagina4.html" class="botao-continuar" id="botaoContinuar">
+                <span>CONTINUAR</span>
+                <span class="botao-seta">→</span>
+            </a>
+
+        </div>
+
+        <div class="codigo-identificacao">
+            <span>MISSION_02</span>
+            <span>///</span>
+            <span id="statusMissao">LOCKED</span>
+        </div>
+
+    </main>
+
+
+    <script>
+
+        const opcoes = document.querySelectorAll(".opcao-jogo");
+        const mensagem = document.getElementById("mensagemResposta");
+        const botaoContinuar = document.getElementById("botaoContinuar");
+        const statusMissao = document.getElementById("statusMissao");
+
+        opcoes.forEach(opcao => {
+
+            opcao.addEventListener("click", function () {
+
+                // Remove estados anteriores
+                opcoes.forEach(item => {
+                    item.classList.remove("erro", "acerto");
+                });
+
+                if (this.dataset.resposta === "certa") {
+
+                    // RESPOSTA CERTA
+                    this.classList.add("acerto");
+
+                    mensagem.innerHTML = `
+                        <span class="icone-resposta">✓</span>
+                        <div>
+                            <strong>IDENTIFICAÇÃO CONFIRMADA</strong>
+                            <small>VOCÊ RECONHECEU A PISTA.</small>
+                        </div>
+                    `;
+
+                    mensagem.classList.remove("mensagem-erro");
+                    mensagem.classList.add("mensagem-acerto");
+
+                    statusMissao.textContent = "UNLOCKED";
+
+                    botaoContinuar.classList.add("ativo");
+
+                } else {
+
+                    // RESPOSTA ERRADA
+                    this.classList.add("erro");
+
+                    mensagem.innerHTML = `
+                        <span class="icone-resposta">✕</span>
+                        <div>
+                            <strong>ACESSO NEGADO</strong>
+                            <small>ESSA NÃO PARECE SER A RESPOSTA...</small>
+                        </div>
+                    `;
+
+                    mensagem.classList.remove("mensagem-acerto");
+                    mensagem.classList.add("mensagem-erro");
+
+                    statusMissao.textContent = "LOCKED";
+
+                    botaoContinuar.classList.remove("ativo");
+
+                }
+
+            });
+
+        });
+
+
+        // Impede continuar antes de acertar
+        botaoContinuar.addEventListener("click", function (event) {
+
+            if (!this.classList.contains("ativo")) {
+                event.preventDefault();
+
+                mensagem.classList.remove("piscar");
+
+                void mensagem.offsetWidth;
+
+                mensagem.classList.add("piscar");
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
